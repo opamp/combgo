@@ -1,5 +1,6 @@
 package combgo;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -10,7 +11,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
 import javafx.event.ActionEvent;
+
 
 public class Controller implements Initializable {
     @FXML
@@ -56,12 +60,22 @@ public class Controller implements Initializable {
 
     @FXML
     public void onClickSelectFFmpegPath(ActionEvent event) {
-        System.out.println("FFmpeg");
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Select a ffmpeg execution file");
+        File ffmpeg = chooser.showOpenDialog(null);
+        if(ffmpeg != null) {
+            this.ffmpegpathText.setText(ffmpeg.getPath());
+        }
     }
 
     @FXML
     public void onClickSelectTargetPath(ActionEvent event) {
-        System.out.println("Target");        
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Select a target directory");
+        File target = chooser.showDialog(null);
+        if(target != null){
+            this.targetpathText.setText(target.getPath());
+        }
     }
     
     @FXML
