@@ -10,7 +10,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/main.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("combgo");
