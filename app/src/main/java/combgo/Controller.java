@@ -2,6 +2,7 @@ package combgo;
 
 import java.io.File;
 import java.net.URL;
+import java.net.URI;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -14,6 +15,9 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
 import javafx.event.ActionEvent;
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 
 public class Controller implements Initializable {
@@ -53,9 +57,30 @@ public class Controller implements Initializable {
     @FXML
     private CheckBox removedustCheck;
 
+    private List<CommandGenerator> presets;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.ffmpegpathText.setText("ffmpeg");
+
+        try {
+            List<CommandGenerator> defaultpresets = ConfigLoader.load(new File(new URI(this.getClass().getResource("/defaultpresets.txt").toString())));
+            File userconfig = ConfigLoader.getConfigFilePath();
+            if(userconfig.isFile()){
+                List<CommandGenerator> userpresets = ConfigLoader.load(ConfigLoader.getConfigFilePath());
+                this.presets = Stream.concat(defaultpresets.stream(), userpresets.stream()).collect(Collectors.toList());
+            }else{
+                this.presets = defaultpresets;
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        if(this.presets.isEmpty()){
+            System.err.println("No presets are loaded");
+            System.exit(1);
+        }
+        this.presetCombo.getItems().setAll(this.presets.stream().map(preset -> preset.getName()).collect(Collectors.toList()));
+        this.presetCombo.setValue(this.presets.get(0).getName());
     }
 
     @FXML
