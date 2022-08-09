@@ -5,22 +5,22 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="combgo.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="combgo.Controller">
    <children>
-      <Button fx:id="targetpathSelect" layoutX="507.0" layoutY="100.0" mnemonicParsing="false" onAction="#onClickSelectTargetPath" text="Select" />
-      <Button fx:id="ffmpegpathSelect" layoutX="507.0" layoutY="40.0" mnemonicParsing="false" onAction="#onClickSelectFFmpegPath" text="Select" />
-      <Label fx:id="ffmpegpathMsg" layoutX="21.0" layoutY="44.0" text="FFmpeg Path:" />
-      <TextField fx:id="ffmpegpathText" layoutX="138.0" layoutY="40.0" prefHeight="23.0" prefWidth="349.0" />
-      <TextField fx:id="targetpathText" layoutX="138.0" layoutY="100.0" prefHeight="23.0" prefWidth="349.0" />
-      <Label fx:id="targetpathMsg" layoutX="21.0" layoutY="104.0" text="Target Directory:" />
-      <CheckBox fx:id="conCheck" layoutX="132.0" layoutY="150.0" mnemonicParsing="false" text="Combine &amp; Convert" />
-      <ComboBox fx:id="presetCombo" layoutX="313.0" layoutY="147.0" prefWidth="150.0" />
-      <CheckBox fx:id="removeorigCheck" layoutX="131.0" layoutY="241.0" mnemonicParsing="false" text="Remove originals" />
-      <CheckBox fx:id="removedustCheck" layoutX="132.0" layoutY="297.0" mnemonicParsing="false" text="Remove dusts" />
-      <Button fx:id="startBtn" layoutX="195.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickStart" text="Start" />
-      <Button fx:id="exitBtn" layoutX="358.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickExit" text="Exit" />
-      <TextField fx:id="presetreview" editable="false" layoutX="138.0" layoutY="189.0" prefHeight="23.0" prefWidth="349.0" />
+      <Button fx:id="targetpathSelect" layoutX="507.0" layoutY="100.0" mnemonicParsing="false" onAction="#onClickSelectTargetPath" text="Select" AnchorPane.rightAnchor="35.15240784100365" />
+      <Button fx:id="ffmpegpathSelect" layoutX="507.0" layoutY="40.0" mnemonicParsing="false" onAction="#onClickSelectFFmpegPath" text="Select" AnchorPane.rightAnchor="35.15240784100365" />
+      <Label fx:id="ffmpegpathMsg" layoutX="21.0" layoutY="44.0" text="FFmpeg Path:" AnchorPane.leftAnchor="21.0" />
+      <TextField fx:id="ffmpegpathText" layoutX="138.0" layoutY="40.0" prefHeight="23.0" prefWidth="349.0" AnchorPane.leftAnchor="138.0" AnchorPane.rightAnchor="112.91970248881518" />
+      <TextField fx:id="targetpathText" layoutX="138.0" layoutY="100.0" prefHeight="23.0" prefWidth="349.0" AnchorPane.leftAnchor="138.0" AnchorPane.rightAnchor="112.91970248881518" />
+      <Label fx:id="targetpathMsg" layoutX="21.0" layoutY="104.0" text="Target Directory:" AnchorPane.leftAnchor="21.0" />
+      <CheckBox fx:id="conCheck" layoutX="132.0" layoutY="150.0" mnemonicParsing="false" text="Combine &amp; Convert" AnchorPane.leftAnchor="132.0" AnchorPane.rightAnchor="333.35474238854295" />
+      <ComboBox fx:id="presetCombo" layoutX="313.0" layoutY="147.0" prefWidth="150.0" AnchorPane.leftAnchor="313.0" AnchorPane.rightAnchor="136.39678593088883" />
+      <CheckBox fx:id="removeorigCheck" layoutX="131.0" layoutY="241.0" mnemonicParsing="false" text="Remove originals" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="340.3389760601633" />
+      <CheckBox fx:id="removedustCheck" layoutX="132.0" layoutY="297.0" mnemonicParsing="false" text="Remove dusts" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="340.3389760601633" />
+      <Button fx:id="startBtn" layoutX="195.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickStart" text="Start" AnchorPane.leftAnchor="195.0" />
+      <Button fx:id="exitBtn" layoutX="363.0" layoutY="348.0" mnemonicParsing="false" onAction="#onClickExit" text="Exit" AnchorPane.rightAnchor="186.13401379122735" />
+      <TextField fx:id="presetreview" editable="false" layoutX="138.0" layoutY="189.0" prefHeight="23.0" prefWidth="349.0" AnchorPane.leftAnchor="138.0" AnchorPane.rightAnchor="112.91970248881518" />
    </children>
-</Pane>
+</AnchorPane>
