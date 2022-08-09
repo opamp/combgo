@@ -5,10 +5,12 @@ import java.util.Map;
 public class CommandGenerator {
     private String myname;
     private String optionstr;
+    private String defaultvalue;
     
     CommandGenerator(String name) {
         this.myname = "";
         this.optionstr = "";
+        this.defaultvalue = "";
         this.setName(name);
     }
 
@@ -24,6 +26,14 @@ public class CommandGenerator {
         return this.myname;
     }
 
+    public void setDefaultValue(String val) {
+        this.defaultvalue = val;
+    }
+
+    public String getDefaultValue() {
+        return this.defaultvalue;
+    }
+
     public boolean isReady() {
         if(myname.length() > 0 && optionstr.length() > 0) {
             return true;
@@ -36,7 +46,7 @@ public class CommandGenerator {
         this.optionstr = optstr;
     }
 
-    public String getOptionString(String optstr) {
+    public String getOptionString() {
         return this.optionstr;
     }
 

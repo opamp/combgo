@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URL;
 import java.net.URI;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,6 +48,9 @@ public class Controller implements Initializable {
     private TextField targetpathText;
 
     @FXML
+    private TextField presetreview;
+
+    @FXML
     private ComboBox<String> presetCombo;
 
     @FXML
@@ -61,8 +66,18 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Initialize contents
         this.ffmpegpathText.setText("ffmpeg");
-
+        this.presetCombo.valueProperty().addListener(new ChangeListener<String>() {
+                @Override public void changed(ObservableValue ov, String old_value, String new_value) {
+                    List<CommandGenerator> result = presets.stream().filter(item -> item.getName().equals(new_value)).collect(Collectors.toList());
+                    if(!result.isEmpty()) {
+                        presetreview.setText(result.get(0).getOptionString());
+                    }
+                }
+            });
+        
+        // Initialize preset combobox values
         try {
             List<CommandGenerator> defaultpresets = ConfigLoader.load(new File(new URI(this.getClass().getResource("/defaultpresets.txt").toString())));
             File userconfig = ConfigLoader.getConfigFilePath();
