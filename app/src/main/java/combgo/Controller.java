@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URI;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
 import javafx.event.ActionEvent;
 import java.util.List;
+import java.util.HashMap;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
@@ -64,6 +66,8 @@ public class Controller implements Initializable {
 
     private List<CommandGenerator> presets;
 
+    private CommandGenerator current;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize contents
@@ -72,7 +76,8 @@ public class Controller implements Initializable {
                 @Override public void changed(ObservableValue ov, String old_value, String new_value) {
                     List<CommandGenerator> result = presets.stream().filter(item -> item.getName().equals(new_value)).collect(Collectors.toList());
                     if(!result.isEmpty()) {
-                        presetreview.setText(result.get(0).getOptionString());
+                        current = result.get(0);
+                        presetreview.setText(current.getOptionString());
                     }
                 }
             });
@@ -120,12 +125,16 @@ public class Controller implements Initializable {
     
     @FXML
     public void onClickStart(ActionEvent event) {
-        System.out.println("Start");
+        HashMap<String, String> cmd_vals = new HashMap<String, String>();
+        cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
+        List<VideoList> lists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
+        String cmd = current.command(cmd_vals);
+
     }
 
     @FXML
     public void onClickExit(ActionEvent event) {
-        System.out.println("End");
+        Platform.exit();
     }
     
 }

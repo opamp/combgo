@@ -1,2 +1,2 @@
-copy:-safe 0 -f concat -i {{INPUTLIST}} -codec copy {{OUTPUT}}.mp4
-h265:-safe 0 -f concat -i {{INPUTLIST}} -c:a copy -c:v libx265 -crf 24 -preset slow -f mp4 {{OUTPUT}}.mp4
+copy:{{FFMPEG}} -safe 0 -f concat -i {{INPUTLIST}} -codec copy {{OUTPUT}}.mp4
+h265:{{FFMPEG}} -safe 0 -f concat -i {{INPUTLIST}} -c:a copy -c:v libx265 -crf 24 -preset slow -f mp4 {{OUTPUT}}.mp4
