@@ -58,7 +58,7 @@ public class GoProVideo {
     }
     
     public String getFilePathString() {
-        return this.videofile.toString();
+        return this.videofile.getAbsolutePath();
     }
 
     public boolean isGoProMp4() {

@@ -1,6 +1,8 @@
 package combgo;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
@@ -43,7 +45,14 @@ public class VideoList {
     }
     
     public File generateListFile(File output) {
-        return null;
+        try(FileWriter writer = new FileWriter(output)) {
+            for(GoProVideo vfile : this.filelist) {
+                writer.write("file " + vfile.getFilePathString() + "\n");
+            }
+        }catch(IOException e) {
+            return null;
+        }
+        return output;
     }
 
     public static List<VideoList> makeVideoLists(File target) {
@@ -66,6 +75,7 @@ public class VideoList {
             lst.setVideoNumber(elem.getKey());
             elem.getValue().stream().forEach(vfile -> lst.put(vfile));
             lst.sort();
+            rtn.add(lst);
         }
         
         return rtn;

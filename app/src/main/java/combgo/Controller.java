@@ -127,9 +127,17 @@ public class Controller implements Initializable {
     public void onClickStart(ActionEvent event) {
         HashMap<String, String> cmd_vals = new HashMap<String, String>();
         cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
-        List<VideoList> lists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
-        String cmd = current.command(cmd_vals);
+        List<VideoList> vlists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
 
+        for(VideoList vlist : vlists) {
+            File tmp_vlist = vlist.generateListFile(new File(this.targetpathText.getText(), vlist.getVideoNumber() + ".txt"));
+            if(tmp_vlist != null) {
+                cmd_vals.put("INPUTLIST", tmp_vlist.getAbsolutePath());
+                String cmd = current.command(cmd_vals);
+            }else {
+                // error (skip)
+            }
+        }
     }
 
     @FXML
