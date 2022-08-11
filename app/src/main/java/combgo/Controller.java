@@ -4,12 +4,15 @@ import java.io.File;
 import java.net.URL;
 import java.net.URI;
 import java.lang.Runtime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -124,47 +127,98 @@ public class Controller implements Initializable {
             this.targetpathText.setText(target.getPath());
         }
     }
-    
+
+    protected void ContentsDisable(boolean setval) {
+        targetpathSelect.setDisable(setval);
+        ffmpegpathSelect.setDisable(setval);
+        startBtn.setDisable(setval);
+        exitBtn.setDisable(setval);
+        ffmpegpathText.setDisable(setval);
+        targetpathText.setDisable(setval);
+        presetCombo.setDisable(setval);
+        conCheck.setDisable(setval);
+        removeorigCheck.setDisable(setval);
+        removedustCheck.setDisable(setval);
+    }
+
     @FXML
     public void onClickStart(ActionEvent event) {
-        HashMap<String, String> cmd_vals = new HashMap<String, String>();
-        cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
-        List<VideoList> vlists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
-        List<String> cmdlst = new LinkedList<String>();
+        boolean conversion = this.conCheck.isSelected();
+        boolean removeorig = this.removeorigCheck.isSelected();
+        boolean removedust = this.removedustCheck.isSelected();
 
-        for(VideoList vlist : vlists) {
-            File tmp_vlist = vlist.generateListFile(new File(this.targetpathText.getText(), vlist.getVideoNumber() + "-combgo.txt"));
-            File output = new File(this.targetpathText.getText(), vlist.getVideoNumber());
-            
-            if(tmp_vlist != null) {
-                cmd_vals.put("INPUTLIST", tmp_vlist.getAbsolutePath());
-                cmd_vals.put("OUTPUT", output.getAbsolutePath());
-                cmdlst.add(current.command(cmd_vals));
-            }else {
-                // error (skip)
+        if(removedust) {
+            File target = new File(this.targetpathText.getText());
+            Pattern ptn = Pattern.compile(".+\\.(mp|MP)4$");
+            for(File f : Arrays.asList(target.listFiles())) {
+                if(!ptn.matcher(f.getName()).find()) {
+                    f.delete();
+                }
             }
+        }        
+
+        if(conversion) {
+            this.ContentsDisable(true);
+            HashMap<String, String> cmd_vals = new HashMap<String, String>();
+            cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
+            List<VideoList> vlists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
+            List<String> cmdlst = new LinkedList<String>();
+            List<File> tmp_vlists = new LinkedList<File>();
+
+            for(VideoList vlist : vlists) {
+                File tmp_vlist = vlist.generateListFile(new File(this.targetpathText.getText(), vlist.getVideoNumber() + "-combgo.txt"));
+                File output = new File(this.targetpathText.getText(), vlist.getVideoNumber());
+            
+                if(tmp_vlist != null) {
+                    cmd_vals.put("INPUTLIST", tmp_vlist.getAbsolutePath());
+                    cmd_vals.put("OUTPUT", output.getAbsolutePath());
+                    cmdlst.add(current.command(cmd_vals));
+                    tmp_vlists.add(tmp_vlist);
+                }else {
+                    // error (skip)
+                }
+            }
+
+            Task<Integer> cmd_task = new Task<Integer>() {
+                @Override protected Integer call() throws Exception {
+                    for(String cmd : cmdlst) {
+                        try {
+                            System.out.println("Run -> " + cmd);
+                            Runtime runtime = Runtime.getRuntime();
+                            Process proc = runtime.exec(cmd);
+                            proc.waitFor();
+                            proc.destroy();
+                        }catch(Exception e) {
+                            System.err.println("Failed to run " + cmd);
+                        }
+                    }
+
+                    for(File vlist : tmp_vlists) {
+                        vlist.delete();
+                    }
+
+                    if(removeorig) {
+                        File target = new File(targetpathText.getText());
+                        Pattern ptn = Pattern.compile("^(GH(\\w\\w\\d{6}|\\d{4})|GX(\\w\\w\\d{6}|\\d{6})|GOPR\\d{4}|GP\\d{6})\\.(mp|MP)4$");
+                        for(File f : Arrays.asList(target.listFiles())) {
+                            if(ptn.matcher(f.getName()).find()) {
+                                f.delete();
+                            }
+                        }
+                    }
+
+                    ContentsDisable(false);
+                    return 0;
+                }
+            };
+
+            Thread t = new Thread(cmd_task);
+            t.setDaemon(true);
+            t.start();
+
         }
 
-        Task<Integer> cmd_task = new Task<Integer>() {
-            @Override protected Integer call() throws Exception {
-                for(String cmd : cmdlst) {
-                    try {
-                        System.out.println("Run -> " + cmd); // temp
-                        Runtime runtime = Runtime.getRuntime();
-                        Process proc = runtime.exec(cmd);
-                        proc.waitFor();
-                        proc.destroy();
-                    }catch(Exception e) {
-                        System.err.println("Failed to run " + cmd);
-                    }
-                }
-                return 0;
-            }
-        };
-
-        Thread t = new Thread(cmd_task);
-        t.setDaemon(true);
-        t.start();
+        // enable all btn and textfield.
     }
 
     @FXML
