@@ -5,12 +5,10 @@ import java.util.Map;
 public class CommandGenerator {
     private String myname;
     private String formatstr;
-    private String defaultvalue;
     
     CommandGenerator(String name) {
         this.myname = "";
         this.formatstr = "";
-        this.defaultvalue = "";
         this.setName(name);
     }
 
@@ -24,14 +22,6 @@ public class CommandGenerator {
 
     public String getName() {
         return this.myname;
-    }
-
-    public void setDefaultValue(String val) {
-        this.defaultvalue = val;
-    }
-
-    public String getDefaultValue() {
-        return this.defaultvalue;
     }
 
     public boolean isReady() {
@@ -51,6 +41,12 @@ public class CommandGenerator {
     }
 
     public String command(Map<String, String> vals) {
-        return "Temporary return";
+        String rtn = this.formatstr;
+        for(Map.Entry<String, String> elem: vals.entrySet()) {
+            String replace_target = "{{" + elem.getKey() + "}}";
+            String replace_string = elem.getValue();
+            rtn = rtn.replace(replace_target, replace_string);
+        }
+        return rtn;
     }
 }
