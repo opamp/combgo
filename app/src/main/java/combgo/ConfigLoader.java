@@ -29,7 +29,7 @@ public class ConfigLoader {
         }else{
             CommandGenerator result = new CommandGenerator(splitedstr[0]);
             String optionstr = String.join(sep, Arrays.copyOfRange(splitedstr, 1, splitedstr.length));
-            result.setOptionString(optionstr);
+            result.setFormatString(optionstr);
             return result;
         }
         

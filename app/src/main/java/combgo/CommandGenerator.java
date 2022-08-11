@@ -4,12 +4,12 @@ import java.util.Map;
 
 public class CommandGenerator {
     private String myname;
-    private String optionstr;
+    private String formatstr;
     private String defaultvalue;
     
     CommandGenerator(String name) {
         this.myname = "";
-        this.optionstr = "";
+        this.formatstr = "";
         this.defaultvalue = "";
         this.setName(name);
     }
@@ -35,19 +35,19 @@ public class CommandGenerator {
     }
 
     public boolean isReady() {
-        if(myname.length() > 0 && optionstr.length() > 0) {
+        if(myname.length() > 0 && formatstr.length() > 0) {
             return true;
         }else {
             return false;
         }
     }
 
-    public void setOptionString(String optstr) {
-        this.optionstr = optstr;
+    public void setFormatString(String optstr) {
+        this.formatstr = optstr;
     }
 
-    public String getOptionString() {
-        return this.optionstr;
+    public String getFormatString() {
+        return this.formatstr;
     }
 
     public String command(Map<String, String> vals) {

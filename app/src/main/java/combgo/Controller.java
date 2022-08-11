@@ -77,7 +77,7 @@ public class Controller implements Initializable {
                     List<CommandGenerator> result = presets.stream().filter(item -> item.getName().equals(new_value)).collect(Collectors.toList());
                     if(!result.isEmpty()) {
                         current = result.get(0);
-                        presetreview.setText(current.getOptionString());
+                        presetreview.setText(current.getFormatString());
                     }
                 }
             });
