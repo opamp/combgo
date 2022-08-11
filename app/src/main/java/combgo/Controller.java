@@ -3,10 +3,17 @@ package combgo;
 import java.io.File;
 import java.net.URL;
 import java.net.URI;
+import java.lang.Runtime;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,11 +25,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
 import javafx.event.ActionEvent;
-import java.util.List;
-import java.util.HashMap;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
-
 
 public class Controller implements Initializable {
     @FXML
@@ -128,16 +130,41 @@ public class Controller implements Initializable {
         HashMap<String, String> cmd_vals = new HashMap<String, String>();
         cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
         List<VideoList> vlists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
+        List<String> cmdlst = new LinkedList<String>();
 
         for(VideoList vlist : vlists) {
-            File tmp_vlist = vlist.generateListFile(new File(this.targetpathText.getText(), vlist.getVideoNumber() + ".txt"));
+            File tmp_vlist = vlist.generateListFile(new File(this.targetpathText.getText(), vlist.getVideoNumber() + "-combgo.txt"));
+            File output = new File(this.targetpathText.getText(), vlist.getVideoNumber());
+            
             if(tmp_vlist != null) {
                 cmd_vals.put("INPUTLIST", tmp_vlist.getAbsolutePath());
-                String cmd = current.command(cmd_vals);
+                cmd_vals.put("OUTPUT", output.getAbsolutePath());
+                cmdlst.add(current.command(cmd_vals));
             }else {
                 // error (skip)
             }
         }
+
+        Task<Integer> cmd_task = new Task<Integer>() {
+            @Override protected Integer call() throws Exception {
+                for(String cmd : cmdlst) {
+                    try {
+                        System.out.println("Run -> " + cmd); // temp
+                        Runtime runtime = Runtime.getRuntime();
+                        Process proc = runtime.exec(cmd);
+                        proc.waitFor();
+                        proc.destroy();
+                    }catch(Exception e) {
+                        System.err.println("Failed to run " + cmd);
+                    }
+                }
+                return 0;
+            }
+        };
+
+        Thread t = new Thread(cmd_task);
+        t.setDaemon(true);
+        t.start();
     }
 
     @FXML
