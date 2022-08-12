@@ -49,6 +49,9 @@ public class Controller implements Initializable {
     private Label targetpathMsg;
 
     @FXML
+    private Label statusMsg;
+
+    @FXML
     private TextField ffmpegpathText;
 
     @FXML
@@ -75,6 +78,9 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Init status msg
+        this.statusMsg.setText("...");
+        
         // Initialize contents
         this.ffmpegpathText.setText("ffmpeg");
         this.presetCombo.valueProperty().addListener(new ChangeListener<String>() {
@@ -148,6 +154,7 @@ public class Controller implements Initializable {
         boolean removedust = this.removedustCheck.isSelected();
 
         if(removedust) {
+            this.statusMsg.setText("Removing dusts...");
             File target = new File(this.targetpathText.getText());
             Pattern ptn = Pattern.compile(".+\\.(mp|MP)4$");
             for(File f : Arrays.asList(target.listFiles())) {
@@ -155,10 +162,12 @@ public class Controller implements Initializable {
                     f.delete();
                 }
             }
+            this.statusMsg.setText("...");
         }        
 
         if(conversion) {
             this.ContentsDisable(true);
+            this.statusMsg.setText("Start conversion...");
             HashMap<String, String> cmd_vals = new HashMap<String, String>();
             cmd_vals.put("FFMPEG", this.ffmpegpathText.getText());
             List<VideoList> vlists = VideoList.makeVideoLists(new File(this.targetpathText.getText()));
@@ -179,11 +188,12 @@ public class Controller implements Initializable {
                 }
             }
 
+            statusMsg.setText("Converting...");
+
             Task<Integer> cmd_task = new Task<Integer>() {
                 @Override protected Integer call() throws Exception {
                     for(String cmd : cmdlst) {
                         try {
-                            System.out.println("Run -> " + cmd);
                             Runtime runtime = Runtime.getRuntime();
                             Process proc = runtime.exec(cmd);
                             proc.waitFor();
@@ -198,6 +208,7 @@ public class Controller implements Initializable {
                     }
 
                     if(removeorig) {
+                        statusMsg.setText("Removing original video files");
                         File target = new File(targetpathText.getText());
                         Pattern ptn = Pattern.compile("^(GH(\\w\\w\\d{6}|\\d{4})|GX(\\w\\w\\d{6}|\\d{6})|GOPR\\d{4}|GP\\d{6})\\.(mp|MP)4$");
                         for(File f : Arrays.asList(target.listFiles())) {
@@ -206,8 +217,10 @@ public class Controller implements Initializable {
                             }
                         }
                     }
-
-                    ContentsDisable(false);
+                    Platform.runLater(() -> {
+                        statusMsg.setText("Completed!");
+                        ContentsDisable(false);
+                    });
                     return 0;
                 }
             };
