@@ -11,6 +11,12 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
+}
+
+application {
+    mainModule.set("combgo")
+    mainClass.set("combgo.App")
 }
 
 repositories {
@@ -27,12 +33,13 @@ dependencies {
     implementation 'com.google.guava:guava:31.0.1-jre'
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'combgo.App'
-}
-
 javafx {
     version = '17'
     modules = ['javafx.controls', 'javafx.fxml']
+}
+
+jlink {
+    launcher {
+        name = 'combgo'
+    }
 }
