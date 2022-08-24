@@ -1,4 +1,4 @@
-package combgo;
+package opamp.combgo;
 
 import java.io.File;
 import java.io.FileWriter;

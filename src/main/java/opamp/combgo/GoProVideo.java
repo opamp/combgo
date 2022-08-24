@@ -1,4 +1,4 @@
-package combgo;
+package opamp.combgo;
 
 import java.lang.Integer;
 import java.io.File;

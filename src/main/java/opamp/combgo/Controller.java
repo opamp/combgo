@@ -1,4 +1,4 @@
-package combgo;
+package opamp.combgo;
 
 import java.io.File;
 import java.net.URL;
@@ -95,7 +95,7 @@ public class Controller implements Initializable {
         
         // Initialize preset combobox values
         try {
-            List<CommandGenerator> defaultpresets = ConfigLoader.load(new File(new URI(this.getClass().getResource("/defaultpresets.txt").toString())));
+            List<CommandGenerator> defaultpresets = ConfigLoader.load(getClass().getResourceAsStream("defaultpresets.txt"));
             File userconfig = ConfigLoader.getConfigFilePath();
             if(userconfig.isFile()){
                 List<CommandGenerator> userpresets = ConfigLoader.load(ConfigLoader.getConfigFilePath());

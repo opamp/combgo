@@ -1,16 +1,18 @@
-package combgo;
+package opamp.combgo;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.util.stream.Stream;
+import java.io.IOException;
 
 public class App extends Application {
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("app-view.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);

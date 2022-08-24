@@ -1,4 +1,4 @@
-package combgo;
+package opamp.combgo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public class ConfigLoader {
@@ -53,4 +55,19 @@ public class ConfigLoader {
         }
         return result;
     }
+
+    public static List<CommandGenerator> load(InputStream instream) throws IOException {
+        List<CommandGenerator> result = new LinkedList<CommandGenerator>();
+
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(instream))) {
+            String line = reader.readLine();
+            while(line != null) {
+                result.add(ConfigLoader.parseLine(line));
+                line = reader.readLine();
+            }
+        }catch(Exception e){
+            throw e;
+        }
+        return result;
+    }    
 }

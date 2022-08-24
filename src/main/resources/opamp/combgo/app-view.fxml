@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="combgo.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="opamp.combgo.Controller">
    <children>
       <Button fx:id="targetpathSelect" layoutX="507.0" layoutY="100.0" mnemonicParsing="false" onAction="#onClickSelectTargetPath" text="Select" AnchorPane.rightAnchor="35.15240784100365" />
       <Button fx:id="ffmpegpathSelect" layoutX="507.0" layoutY="40.0" mnemonicParsing="false" onAction="#onClickSelectFFmpegPath" text="Select" AnchorPane.rightAnchor="35.15240784100365" />

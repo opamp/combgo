@@ -1,4 +1,4 @@
-package combgo;
+package opamp.combgo;
 
 import java.util.Map;
 
