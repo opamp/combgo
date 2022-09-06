@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -22,6 +23,7 @@
       <Button fx:id="startBtn" layoutX="195.0" layoutY="338.0" mnemonicParsing="false" onAction="#onClickStart" text="Start" AnchorPane.leftAnchor="195.0" />
       <Button fx:id="exitBtn" layoutX="368.9842336716203" layoutY="338.0" mnemonicParsing="false" onAction="#onClickExit" text="Exit" AnchorPane.rightAnchor="186.13401379122735" />
       <TextField fx:id="presetreview" editable="false" layoutX="138.0" layoutY="189.0" prefHeight="23.0" prefWidth="349.0" AnchorPane.leftAnchor="138.0" AnchorPane.rightAnchor="112.91970248881518" />
-      <Label fx:id="statusMsg" layoutX="20.0" layoutY="372.0" prefHeight="17.0" prefWidth="551.0" text="Input params" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="28.453129932327897" />
+      <Label fx:id="statusMsg" layoutX="232.0" layoutY="372.0" prefHeight="19.0" prefWidth="340.0" text="Input params" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="28.0" />
+      <ProgressBar fx:id="progressBar" layoutX="21.0" layoutY="371.0" prefWidth="200.0" progress="0.0" />
    </children>
 </AnchorPane>
