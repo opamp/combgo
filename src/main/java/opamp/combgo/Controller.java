@@ -208,7 +208,9 @@ public class Controller implements Initializable {
                     }
 
                     if(removeorig) {
-                        statusMsg.setText("Removing original video files");
+                        Platform.runLater(() -> {
+                                statusMsg.setText("Removing original video files");
+                        });
                         File target = new File(targetpathText.getText());
                         Pattern ptn = Pattern.compile("^(GH(\\w\\w\\d{6}|\\d{4})|GX(\\w\\w\\d{6}|\\d{6})|GOPR\\d{4}|GP\\d{6})\\.(mp|MP)4$");
                         for(File f : Arrays.asList(target.listFiles())) {
