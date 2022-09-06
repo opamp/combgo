@@ -25,6 +25,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.DirectoryChooser;
 import javafx.event.ActionEvent;
@@ -72,6 +73,9 @@ public class Controller implements Initializable {
     @FXML
     private CheckBox removedustCheck;
 
+    @FXML
+    private ProgressBar progressBar;
+
     private List<CommandGenerator> presets;
 
     private CommandGenerator current;
@@ -112,6 +116,8 @@ public class Controller implements Initializable {
         }
         this.presetCombo.getItems().setAll(this.presets.stream().map(preset -> preset.getName()).collect(Collectors.toList()));
         this.presetCombo.setValue(this.presets.get(0).getName());
+
+        this.progressBar.setProgress(0.0);
     }
 
     @FXML
@@ -152,6 +158,7 @@ public class Controller implements Initializable {
         boolean conversion = this.conCheck.isSelected();
         boolean removeorig = this.removeorigCheck.isSelected();
         boolean removedust = this.removedustCheck.isSelected();
+        this.progressBar.setProgress(0.0);
 
         if(removedust) {
             this.statusMsg.setText("Removing dusts...");
@@ -192,12 +199,18 @@ public class Controller implements Initializable {
 
             Task<Integer> cmd_task = new Task<Integer>() {
                 @Override protected Integer call() throws Exception {
+                    double count = 1.0;
                     for(String cmd : cmdlst) {
                         try {
+                            final double progress = count / cmdlst.size();
+                            Platform.runLater(() -> {
+                                    progressBar.setProgress(progress);
+                                });
                             Runtime runtime = Runtime.getRuntime();
                             Process proc = runtime.exec(cmd);
                             proc.waitFor();
                             proc.destroy();
+                            count += 1.0;
                         }catch(Exception e) {
                             System.err.println("Failed to run " + cmd);
                         }
@@ -221,6 +234,7 @@ public class Controller implements Initializable {
                     }
                     Platform.runLater(() -> {
                         statusMsg.setText("Completed!");
+                        progressBar.setProgress(1.0);
                         ContentsDisable(false);
                     });
                     return 0;
